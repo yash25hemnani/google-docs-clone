@@ -1,0 +1,5 @@
+1. Create a next app - npm create-next-app@latest
+
+2. Setup Shadcn - Bring all the components at once
+
+3. 
