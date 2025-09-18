@@ -2,4 +2,24 @@
 
 2. Setup Shadcn - Bring all the components at once
 
-3. 
+NOTE - To Create Routes, you need to create a folder under the 'app' folder. And the folder should have a page.tsx.
+
+NOTE - To create dynamic routes, have the folder name encased within square brackets. []. This name is case sensitive, so be careful while typing it out.
+
+NOTE - To create a collection of folders, without having to include it in the url, you can do it by enclosing the folder in (). This still is a parent folder, so you can use a layout file here nonetheless.
+
+3. Implement the TipTap Editor with proper styles to make it look like an A4 page.
+
+4. Add styles for the bullet list extension. Use css syntax, becasue the syntax in the docs is of scss.
+
+5. Add the tasklist/checkboxes styles (not included in starter kit)
+
+6. Add the headings styles (included in starter kit)
+
+7. Add tables extension (not included in starter kit)
+
+8. Add the Images extension, along with the resize extension using 'npm i tiptap-extension-resize-image'
+
+9. Starting implementing the toolbar buttons, to make them work, we would need the editor variable to be passed to the Editor.tsx. To do that, we will be setting up a Zustand store. In that store we will pass the editor, so we can use it in the toolbar.
+
+10.
