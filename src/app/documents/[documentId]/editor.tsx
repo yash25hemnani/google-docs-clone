@@ -7,40 +7,39 @@ import { TaskItem, TaskList } from "@tiptap/extension-list";
 import { TableKit } from "@tiptap/extension-table";
 import Image from "@tiptap/extension-image";
 import ImageResize from "tiptap-extension-resize-image";
-import {useEditorStore} from "@/store/use-editor-store";
-import { TextStyle, FontFamily } from '@tiptap/extension-text-style'
-
+import { useEditorStore } from "@/store/use-editor-store";
+import { TextStyle, FontFamily } from "@tiptap/extension-text-style";
 
 
 // We are defining the editor in such a way that when we print it, there is no unnecessary padding.
 const Editor = () => {
-  const {setEditor} = useEditorStore()
+  const { setEditor } = useEditorStore();
 
   const editor = useEditor({
     // Add all the methods so that no matter what happens we will have the editor
-    onCreate({editor}) {
-      setEditor(editor)
+    onCreate({ editor }) {
+      setEditor(editor);
     },
     onDestroy() {
-      setEditor(null)
+      setEditor(null);
     },
-    onUpdate({editor}) {
-      setEditor(editor)
+    onUpdate({ editor }) {
+      setEditor(editor);
     },
-    onSelectionUpdate({editor}) {
-      setEditor(editor)
+    onSelectionUpdate({ editor }) {
+      setEditor(editor);
     },
-    onTransaction({editor}) {
-      setEditor(editor)
+    onTransaction({ editor }) {
+      setEditor(editor);
     },
-    onFocus({editor}) {
-      setEditor(editor)
+    onFocus({ editor }) {
+      setEditor(editor);
     },
-    onBlur({editor}) {
-      setEditor(editor)
+    onBlur({ editor }) {
+      setEditor(editor);
     },
-    onContentError({editor}) {
-      setEditor(editor)
+    onContentError({ editor }) {
+      setEditor(editor);
     },
     editorProps: {
       attributes: {

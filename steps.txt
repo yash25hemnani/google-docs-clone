@@ -8,7 +8,7 @@ NOTE - To create dynamic routes, have the folder name encased within square brac
 
 NOTE - To create a collection of folders, without having to include it in the url, you can do it by enclosing the folder in (). This still is a parent folder, so you can use a layout file here nonetheless.
 
-3. Implement the TipTap Editor with proper styles to make it look like an A4 page.
+3. Implement the TipTap Editor with proper styles to make it look like an A4 page. You can change the styles of specific tags in the globals.css
 
 4. Add styles for the bullet list extension. Use css syntax, becasue the syntax in the docs is of scss.
 
@@ -24,4 +24,6 @@ NOTE - To create a collection of folders, without having to include it in the ur
 
 10. Implement the basic buttons - undo, redo, print etc.
 
-11. Implement Font Family functions via extension.
+11. Implement Font Family functions, using the extensions of TipTap.
+
+12. Implement Headings using the TipTap Extensions.
