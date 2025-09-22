@@ -22,4 +22,6 @@ NOTE - To create a collection of folders, without having to include it in the ur
 
 9. Starting implementing the toolbar buttons, to make them work, we would need the editor variable to be passed to the Editor.tsx. To do that, we will be setting up a Zustand store. In that store we will pass the editor, so we can use it in the toolbar.
 
-10.
+10. Implement the basic buttons - undo, redo, print etc.
+
+11. Implement Font Family functions via extension.
