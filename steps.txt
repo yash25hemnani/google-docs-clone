@@ -27,3 +27,7 @@ NOTE - To create a collection of folders, without having to include it in the ur
 11. Implement Font Family functions, using the extensions of TipTap.
 
 12. Implement Headings using the TipTap Extensions.
+
+13. Implement Color Tools (text and highlights) using React-Color
+
+14. 

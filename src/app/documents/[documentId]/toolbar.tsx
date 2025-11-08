@@ -4,7 +4,9 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { useEditorStore } from "@/store/use-editor-store";
 import {
+  Ban,
   BoldIcon,
+  HighlighterIcon,
   ItalicIcon,
   ListTodoIcon,
   LucideIcon,
@@ -17,6 +19,7 @@ import {
   Undo2Icon,
 } from "lucide-react";
 import React from "react";
+import { type ColorResult, CirclePicker, SketchPicker } from "react-color";
 
 import {
   DropdownMenu,
@@ -25,7 +28,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDownIcon } from "lucide-react";
-import {type Level} from "@tiptap/extension-heading"
+import { type Level } from "@tiptap/extension-heading";
 
 const HeadingLevelButton = () => {
   const { editor } = useEditorStore();
@@ -71,16 +74,20 @@ const HeadingLevelButton = () => {
                   editor?.isActive("heading"),
                 { level: value }) && "bg-neutral-100/80"
               )}
-              style={{fontSize: fontSize}}
+              style={{ fontSize: fontSize }}
               onClick={() => {
                 if (value === 0) {
-                    editor?.chain().focus().setParagraph().run()
+                  editor?.chain().focus().setParagraph().run();
                 } else {
-                    editor?.chain().focus().toggleHeading({level: value as Level}).run()
+                  editor
+                    ?.chain()
+                    .focus()
+                    .toggleHeading({ level: value as Level })
+                    .run();
                 }
               }}
             >
-                {label}
+              {label}
             </button>
           );
         })}
@@ -125,6 +132,72 @@ const FontFamilyButton = () => {
             <span className="text-sm">{label}</span>
           </button>
         ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+const TextColorButton = () => {
+  const { editor } = useEditorStore();
+  const value = editor?.getAttributes("textStyle").color || "#000000";
+
+  const onChange = (color: ColorResult) => {
+    editor?.chain().focus().setColor(color.hex).run();
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-between rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm">
+          <span className="text-[18px] font-semibold">
+            A
+            <div
+              className="h-1 w-full"
+              style={{ backgroundColor: value }}
+            ></div>
+          </span>
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="p-2.5">
+        <SketchPicker color={value} onChange={onChange} />
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+const HighlightColorButton = () => {
+  const { editor } = useEditorStore();
+
+  const value = editor?.getAttributes("highlight").color || "#FFFFFF";
+
+  const onChange = (color: ColorResult) => {
+    editor?.chain().focus().setHighlight({ color: color.hex }).run();
+  };
+
+  const resetHighlight = () => {
+    editor?.chain().focus().setHighlight({ color: "#FFFFFF" }).run();
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className="h-7 min-w-5 shrink-0 flex flex-col items-center justify-between rounded-sm hover:bg-neutral-200/80 px-0.5 overflow-hidden text-sm">
+          <HighlighterIcon className="size-6" />
+          <div className="h-0.5 w-full" style={{ backgroundColor: value }}></div>
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="p-2.5">
+        <SketchPicker
+          color={value}
+          onChange={onChange}
+          className="shadow-none"
+        />
+        <button
+          onClick={resetHighlight}
+          className="mt-2 p-2 rounded-sm flex gap-2 items-center hover:bg-gray-100 border-1 border-gray-400 w-full cursor-pointer active:bg-gray-200"
+        >
+          <Ban className="w-4 h-4" /> <span className="text-[15px]">None</span>
+        </button>
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -259,6 +332,14 @@ const Toolbar = () => {
       {sections[1].map((item) => (
         <ToolbarButton key={item.label} {...item} />
       ))}
+
+      <Separator orientation="vertical" className="h-6 bg-neutral-300" />
+
+      <TextColorButton />
+
+      <Separator orientation="vertical" className="h-6 bg-neutral-300" />
+
+      <HighlightColorButton />
 
       <Separator orientation="vertical" className="h-6 bg-neutral-300" />
 
