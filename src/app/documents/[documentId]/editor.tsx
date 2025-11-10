@@ -14,12 +14,15 @@ import { Color } from "@tiptap/extension-text-style";
 import Link from '@tiptap/extension-link'
 import TextAlign from '@tiptap/extension-text-align'
 import { FontSizeExtension } from "@/extensions/font-size";
+import { LineHeightExtension } from "@/extensions/line-height";
+import Ruler from "./ruler";
 
 // We are defining the editor in such a way that when we print it, there is no unnecessary padding.
 const Editor = () => {
   const { setEditor } = useEditorStore();
 
   const editor = useEditor({
+    immediatelyRender: false,
     // Add all the methods so that no matter what happens we will have the editor
     onCreate({ editor }) {
       setEditor(editor);
@@ -55,6 +58,12 @@ const Editor = () => {
     extensions: [
       StarterKit,
       FontSizeExtension,
+      LineHeightExtension.configure({
+        // We have already defined it, but this is just to show the available options. 
+        // You can remove it as well.
+        types: ['heading', 'paragraph'],
+        defaultLineHeight: "normal",
+      }),
       TextAlign.configure({
         types: ['heading', 'paragraph'],
       }),
@@ -84,12 +93,12 @@ const Editor = () => {
         <p>This is a basic example of implementing images. Drag to re-order.</p>
         <img src="https://placehold.co/800x400" />
         <img src="https://placehold.co/800x400/6A00F5/white" />`,
-    immediatelyRender: false,
   });
 
   return (
     // This defines the background of the page that will be enclosing the editor.
     <div className="size-full overflow-x-auto bg-[#F9FBFD] px-4 print:bg-white print:overflow-visible">
+      <Ruler />
       <div className="min-w-max flex justify-center w-[816px] py-4 print:py-0 mx-auto print:w-full print:min-w-0">
         <EditorContent editor={editor} />
       </div>
