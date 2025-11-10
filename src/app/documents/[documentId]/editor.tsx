@@ -11,6 +11,9 @@ import { useEditorStore } from "@/store/use-editor-store";
 import { TextStyle, FontFamily } from "@tiptap/extension-text-style";
 import Highlight from '@tiptap/extension-highlight'
 import { Color } from "@tiptap/extension-text-style";
+import Link from '@tiptap/extension-link'
+import TextAlign from '@tiptap/extension-text-align'
+import { FontSizeExtension } from "@/extensions/font-size";
 
 // We are defining the editor in such a way that when we print it, there is no unnecessary padding.
 const Editor = () => {
@@ -51,6 +54,10 @@ const Editor = () => {
     },
     extensions: [
       StarterKit,
+      FontSizeExtension,
+      TextAlign.configure({
+        types: ['heading', 'paragraph'],
+      }),
       FontFamily,
       TextStyle,
       TaskList,
@@ -66,6 +73,12 @@ const Editor = () => {
       }),
       Highlight.configure({ multicolor: true }),
       Color, 
+      Link.configure({
+        openOnClick: false,
+        autolink: true,
+        defaultProtocol: 'https',
+        protocols: ['http', 'https'],
+      }),
     ],
     content: `
         <p>This is a basic example of implementing images. Drag to re-order.</p>

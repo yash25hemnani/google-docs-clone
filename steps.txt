@@ -30,4 +30,12 @@ NOTE - To create a collection of folders, without having to include it in the ur
 
 13. Implement Color Tools (text and highlights) using React-Color
 
-14. 
+14. Add the Link Extension and LinkButton
+
+15. Add the ImageButton
+
+16. Add the Align Text option and the Ordered/Bullet List option
+
+17. Creating a custom extension - Font Size
+    Create an extensions folder and add the font-size.ts to it.
+    
