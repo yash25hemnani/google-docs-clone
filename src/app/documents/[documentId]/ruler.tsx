@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useRef, useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
 
@@ -25,6 +26,16 @@ const Marker = ({
       onDoubleClick={onDoubleClick}
     >
       <FaCaretDown className="absolute left-1/2 top-0 h-full fill-blue-500 transform translate" />
+      <div 
+        className="absolute left-1/2 top-4 transform -translate-x-1/2 "
+        style={{
+          height: "100vh",
+          width: "2px",
+          transform: "scaleX(0.5)",
+          backgroundColor: "#3b72f6",
+          display: isDragging ? "block" : "none"
+        }}
+      />
     </div>
   );
 };
@@ -48,44 +59,75 @@ const Ruler = () => {
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
+    const PAGE_WIDTH = 816;
+    const MINIMUM_SPACE = 100;
     if ((isDraggingLeft || isDraggingRight) && rulerRef.current) {
       const container = rulerRef.current.querySelector("#ruler-container");
 
       if (container) {
         const containerRect = container.getBoundingClientRect();
+        // how far from the start of the ruler your mouse is
         const relativeX = e.clientX - containerRect.left;
-        
+        // This clamps the position between 0 and 816 pixels.
+        const rawPosition = Math.max(0, Math.min(816, relativeX));
+
+        if (isDraggingLeft) {
+          // maxLeftPosition ensures the left margin cannot go too far right and overlap the right margin.
+          // The -100 part enforces a minimum 100px gap between left and right margins.
+          const maxLeftPosition = PAGE_WIDTH - rightMargin - MINIMUM_SPACE;
+          const newLeftPosition = Math.min(rawPosition, maxLeftPosition);
+          setLeftMargin(newLeftPosition); // TODO: make collaborative
+        } else if (isDraggingRight) {
+          // maxRightPosition ensures the right margin cannot go too far left and overlap the left margin.
+          // The -100 part enforces a minimum 100px gap between left and right margins.
+          const maxRightPosition = PAGE_WIDTH - (leftMargin + MINIMUM_SPACE);
+          const newRightPosition = Math.min(PAGE_WIDTH - rawPosition, maxRightPosition);
+          setRightMargin(newRightPosition); // TODO: make collaborative
+        }
       }
     }
+  };
+
+  const handleMouseUp = () => {
+    setIsDraggingLeft(false);
+    setIsDraggingRight(false);
+  };
+
+  const handleLeftDoubleClick = () => {
+    setLeftMargin(56);
+  };
+
+  const handleRightDoubleClick = () => {
+    setRightMargin(56);
   };
 
   return (
     <div
       ref={rulerRef}
       onMouseMove={handleMouseMove}
-      onMouseUp = {() => {}}
-      onMouseLeave = {() => {}}
-      className="h-6 border-b border-gray-300 flex items-end relative select-none print:hidden"
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+      className="w-[816px] mx-auto h-6 border-b border-gray-300 flex items-end relative select-none print:hidden"
     >
       <div
         id="ruler-container"
-        className="max-w-[816px] mx-auto w-full h-full relative"
+        className="w-full h-full relative"
       >
         {/* Left Marker */}
         <Marker
-          position={56}
+          position={leftMargin}
           isLeft={true}
-          isDragging={false}
-          onMouseDown={() => {}}
-          onDoubleClick={() => {}}
+          isDragging={isDraggingLeft}
+          onMouseDown={handleLeftMouseDown}
+          onDoubleClick={handleLeftDoubleClick}
         />
         {/* Right Marker */}
         <Marker
-          position={56}
+          position={rightMargin}
           isLeft={false}
-          isDragging={false}
-          onMouseDown={() => {}}
-          onDoubleClick={() => {}}
+          isDragging={isDraggingRight}
+          onMouseDown={handleRightMouseDown}
+          onDoubleClick={handleRightDoubleClick}
         />
         <div className="absolute inset-x-0 bottom-0 h-full">
           <div className="relative h-full w-[816px]">

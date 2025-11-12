@@ -38,5 +38,7 @@ NOTE - To create a collection of folders, without having to include it in the ur
 
 17. Creating a custom extension - Font Size and Line Height
 
+18. Develop the Navbar and its functionalities
 
+19. Develop the home page -> Utilize 'nuqs' for the search params
     

@@ -482,7 +482,8 @@ const LineHeightButton = () => {
               onClick={() => editor?.chain().focus().setLineHeight(value).run()}
               className={cn(
                 "flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-neutral-200/80",
-                editor?.getAttributes("paragraph").lineHeight === value && "bg-neutral-200/80"
+                editor?.getAttributes("paragraph").lineHeight === value &&
+                  "bg-neutral-200/80"
               )}
             >
               <span className="text-sm">{label}</span>
@@ -551,7 +552,7 @@ const ListButton = () => {
         <MinusIcon className="size-4" />
       </button>
       {isEditing ? (
-        <input 
+        <input
           type="text"
           value={inputValue}
           onChange={handleInputChange}
@@ -560,10 +561,13 @@ const ListButton = () => {
           className="h-7 w-10 text-sm flex items-center justify-center rounded-sm bg-transparent focus:outline-none focus:ring-1 hover:bg-neutral-200/80"
         />
       ) : (
-        <button onClick={() => {
-          setIsEditing(true);
-          setFontSize(currentFontSize)
-        }} className="h-7 w-10 text-sm flex items-center justify-center rounded-sm bg-transparent cursor-text">
+        <button
+          onClick={() => {
+            setIsEditing(true);
+            setFontSize(currentFontSize);
+          }}
+          className="h-7 w-10 text-sm flex items-center justify-center rounded-sm bg-transparent cursor-text"
+        >
           {currentFontSize}
         </button>
       )}
