@@ -41,4 +41,13 @@ NOTE - To create a collection of folders, without having to include it in the ur
 18. Develop the Navbar and its functionalities
 
 19. Develop the home page -> Utilize 'nuqs' for the search params
+
+20. Add templates to the home page.
+
+21. Create Database using Convex -> Install for NextJS
+
+22. Implement Auth with Clerk -> Folow both the Convex+Clerk and NextJS+Clerk Docs
     
+23. Handle the Document CRUD and UI for the same. Convex handles a lot of UI manipulation by itself. 
+
+24. Create the Search functionality

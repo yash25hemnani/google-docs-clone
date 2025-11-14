@@ -1,3 +1,4 @@
+"use client";
 import {
   Carousel,
   CarouselContent,
@@ -6,12 +7,27 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
-import React from "react";
+import React, { useState } from "react";
 import { templates } from "@/constants/templates";
-
+import { useRouter } from "next/navigation";
+import { useMutation } from "convex/react";
+import { api } from "../../../convex/_generated/api";
 
 const TemplatesGallery = () => {
-  const isCreating = false;
+  const router = useRouter();
+  const createDocument = useMutation(api.documents.createDocument);
+  const [isCreating, setIsCreating] = useState(false);
+
+  const onTemplateClick = (title: string, initialContent: string) => {
+    setIsCreating(true);
+    createDocument({ title, initialContent }) // Returns documentId
+      .then((documentId) => {
+        router.push(`/documents/${documentId}`); // Using that returned doumentId, navigate to the editor page
+      })
+      .finally(() => {
+        setIsCreating(false);
+      });
+  };
 
   return (
     <div className="bg-[#F1F3F4]">
@@ -31,8 +47,9 @@ const TemplatesGallery = () => {
                   )}
                 >
                   <button
-                    disabled={isCreating}
-                    onClick={() => {}}
+                    disabled={isCreating} // Disable others while one is being created.
+                    // TODO: Add proper initial content 
+                    onClick={() => onTemplateClick(template.label, "")}
                     style={{
                       backgroundImage: `url(${template.imageUrl})`,
                       backgroundSize: "cover",
