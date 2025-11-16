@@ -12,6 +12,7 @@ import { templates } from "@/constants/templates";
 import { useRouter } from "next/navigation";
 import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
+import { toast } from "sonner";
 
 const TemplatesGallery = () => {
   const router = useRouter();
@@ -21,8 +22,12 @@ const TemplatesGallery = () => {
   const onTemplateClick = (title: string, initialContent: string) => {
     setIsCreating(true);
     createDocument({ title, initialContent }) // Returns documentId
+      .catch(() => {
+        toast.error("Something Went Wrong!");
+      })
       .then((documentId) => {
         router.push(`/documents/${documentId}`); // Using that returned doumentId, navigate to the editor page
+        toast.success("Document Created");
       })
       .finally(() => {
         setIsCreating(false);
@@ -48,7 +53,7 @@ const TemplatesGallery = () => {
                 >
                   <button
                     disabled={isCreating} // Disable others while one is being created.
-                    // TODO: Add proper initial content 
+                    // TODO: Add proper initial content
                     onClick={() => onTemplateClick(template.label, "")}
                     style={{
                       backgroundImage: `url(${template.imageUrl})`,

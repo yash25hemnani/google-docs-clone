@@ -45,6 +45,7 @@ const DocumentRow = ({ document }: DocumentRowProps) => {
       <TableCell className="flex justify-end">
         <DocumentMenu
           documentId={document._id}
+          ownerId={document.ownerId}
           title={document.title}
           onNewTab={onNewTabClick}
         />

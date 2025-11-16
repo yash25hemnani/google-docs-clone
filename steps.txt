@@ -51,3 +51,7 @@ NOTE - To create a collection of folders, without having to include it in the ur
 23. Handle the Document CRUD and UI for the same. Convex handles a lot of UI manipulation by itself. 
 
 24. Create the Search functionality
+
+24. Implement the Organizations Feature using Clerk - OrganizationSwitcher Component + Add the Organization Id Claim to the JWT token. Remember to Allow Personal Accounts as well..
+
+25. Start implementing LiveBlocks -> SignUp and Choose the LiveBlocks Tiptap for NextJS -> Generate Config File

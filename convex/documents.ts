@@ -15,10 +15,15 @@ export const createDocument = mutation({
       throw new ConvexError("Unauthorized Actions");
     }
 
+    const organizationId = (user.organization_id ?? undefined) as
+      | string
+      | undefined;
+
     // Returns a document ID
     return await ctx.db.insert("documents", {
       title: args.title ?? "Untitled Document",
       ownerId: user.subject,
+      organizationId,
       initialContent: args.initialContent,
     });
   },
@@ -27,9 +32,59 @@ export const createDocument = mutation({
 // Get Document Method
 export const getDocuments = query({
   // Add pagination
-  args: { paginationOpts: paginationOptsValidator },
+  args: {
+    paginationOpts: paginationOptsValidator,
+    searchQuery: v.optional(v.string()),
+  },
   handler: async (ctx, args) => {
-    return await ctx.db.query("documents").paginate(args.paginationOpts);
+    const user = await ctx.auth.getUserIdentity();
+    if (!user) {
+      throw new ConvexError("Unauthorized Action");
+    }
+
+    const organizationId = (user.organization_id ?? undefined) as
+      | string
+      | undefined;
+
+    // Searching through the organization documents
+    if (args.searchQuery && organizationId) {
+      const searchQuery = args.searchQuery;
+
+      return await ctx.db
+        .query("documents")
+        .withSearchIndex("search_title", (q) =>
+          q.search("title", searchQuery).eq("organizationId", organizationId)
+        )
+        .paginate(args.paginationOpts);
+    }
+
+    // Searching through personal documents
+    if (args.searchQuery) {
+      const searchQuery = args.searchQuery;
+      // TS now knows this is a string.
+      // TypeScript does not narrow the type inside the callback because the callback runs inside a different function scope, and TS can’t guarantee that args.searchQuery is still a string.
+
+      return await ctx.db
+        .query("documents")
+        .withSearchIndex("search_title", (q) =>
+          q.search("title", searchQuery).eq("ownerId", user.subject)
+        )
+        .paginate(args.paginationOpts);
+    }
+
+    // Getting organization documents
+    if (organizationId) {
+      return await ctx.db
+      .query("documents")
+      .withIndex("by_organization_id", (q) => q.eq("organizationId", organizationId))
+      .paginate(args.paginationOpts);
+    }
+
+    // Getting personal documents
+    return await ctx.db
+      .query("documents")
+      .withIndex("by_owner_id", (q) => q.eq("ownerId", user.subject))
+      .paginate(args.paginationOpts);
   },
 });
 
@@ -42,6 +97,7 @@ export const removeById = mutation({
     if (!user) {
       throw new ConvexError("Unauthorized Action");
     }
+
     // Check if document exists
     const document = await ctx.db.get(args.id);
     if (!document) {
