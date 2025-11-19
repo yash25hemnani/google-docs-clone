@@ -9,17 +9,23 @@ import Image from "@tiptap/extension-image";
 import ImageResize from "tiptap-extension-resize-image";
 import { useEditorStore } from "@/store/use-editor-store";
 import { TextStyle, FontFamily } from "@tiptap/extension-text-style";
-import Highlight from '@tiptap/extension-highlight'
+import Highlight from "@tiptap/extension-highlight";
 import { Color } from "@tiptap/extension-text-style";
-import Link from '@tiptap/extension-link'
-import TextAlign from '@tiptap/extension-text-align'
+import Link from "@tiptap/extension-link";
+import TextAlign from "@tiptap/extension-text-align";
 import { FontSizeExtension } from "@/extensions/font-size";
 import { LineHeightExtension } from "@/extensions/line-height";
 import Ruler from "./ruler";
+import {
+  useLiveblocksExtension,
+  FloatingToolbar,
+} from "@liveblocks/react-tiptap";
+import { Threads } from "./threads";
 
 // We are defining the editor in such a way that when we print it, there is no unnecessary padding.
 const Editor = () => {
   const { setEditor } = useEditorStore();
+  const liveblocks = useLiveblocksExtension();
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -56,16 +62,20 @@ const Editor = () => {
       },
     },
     extensions: [
-      StarterKit,
+      liveblocks,
+      StarterKit.configure({
+        // The Liveblocks extension comes with its own history handling
+        undoRedo: false,
+      }),
       FontSizeExtension,
       LineHeightExtension.configure({
-        // We have already defined it, but this is just to show the available options. 
+        // We have already defined it, but this is just to show the available options.
         // You can remove it as well.
-        types: ['heading', 'paragraph'],
+        types: ["heading", "paragraph"],
         defaultLineHeight: "normal",
       }),
       TextAlign.configure({
-        types: ['heading', 'paragraph'],
+        types: ["heading", "paragraph"],
       }),
       FontFamily,
       TextStyle,
@@ -81,15 +91,15 @@ const Editor = () => {
         inline: true,
       }),
       Highlight.configure({ multicolor: true }),
-      Color, 
+      Color,
       Link.configure({
         openOnClick: false,
         autolink: true,
-        defaultProtocol: 'https',
-        protocols: ['http', 'https'],
+        defaultProtocol: "https",
+        protocols: ["http", "https"],
       }),
     ],
-    content: ``
+    content: ``,
   });
 
   return (
@@ -98,6 +108,7 @@ const Editor = () => {
       <Ruler />
       <div className="min-w-max flex justify-center w-[816px] py-4 print:py-0 mx-auto print:w-full print:min-w-0">
         <EditorContent editor={editor} />
+        <Threads editor={editor} />
       </div>
     </div>
   );

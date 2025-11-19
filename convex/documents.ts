@@ -75,9 +75,11 @@ export const getDocuments = query({
     // Getting organization documents
     if (organizationId) {
       return await ctx.db
-      .query("documents")
-      .withIndex("by_organization_id", (q) => q.eq("organizationId", organizationId))
-      .paginate(args.paginationOpts);
+        .query("documents")
+        .withIndex("by_organization_id", (q) =>
+          q.eq("organizationId", organizationId)
+        )
+        .paginate(args.paginationOpts);
     }
 
     // Getting personal documents
@@ -134,5 +136,19 @@ export const updateById = mutation({
     }
     // Delete document
     return await ctx.db.patch(args.id, { title: args.title });
+  },
+});
+
+// Get Document by ID
+export const getById = query({
+  args: { id: v.id("documents") },
+  handler: async (ctx, { id }) => {
+    const document = await ctx.db.get(id);
+
+    if (!document) {
+      throw new ConvexError("Document Not Found");
+    }
+
+    return document;
   },
 });

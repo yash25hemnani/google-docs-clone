@@ -5,6 +5,8 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import ConvexClientProvider from "../components/convex-client-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
+import "@liveblocks/react-ui/styles.css";
+import "@liveblocks/react-tiptap/styles.css";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -20,6 +22,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body className={inter.className}>
