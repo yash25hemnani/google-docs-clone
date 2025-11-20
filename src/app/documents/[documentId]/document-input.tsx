@@ -50,7 +50,10 @@ const DocumentInput = ({ title, id }: DocumentInputProps) => {
         toast.success("Document Updated");
         setIsEditing(false);
       })
-      .catch(() => toast.error("Something Went Wrong"))
+      .catch(() => {
+        setIsError(true);
+        toast.error("Something Went Wrong");
+      })
       .finally(() => setIsPending(false));
   };
 
@@ -82,14 +85,16 @@ const DocumentInput = ({ title, id }: DocumentInputProps) => {
       ) : (
         <span
           onClick={() => {
-            // Make it so only owner can edit the document
-            userId === documentOwnerId
-              ? setIsEditing(true)
-              : toast.warning("Only Owner Can Rename Documents");
-            // We time out so we get time to render.
-            setTimeout(() => {
-              inputRef.current?.focus();
-            }, 0);
+            if (userId === documentOwnerId) {
+              setIsEditing(true);
+
+              // Focus only when editing is enabled
+              setTimeout(() => {
+                inputRef.current?.focus();
+              }, 0);
+            } else {
+              toast.warning("Only Owner Can Rename Documents");
+            }
           }}
           className="text-lg px-1.5 cursor-pointer truncate"
         >
@@ -99,7 +104,7 @@ const DocumentInput = ({ title, id }: DocumentInputProps) => {
 
       {/* States for the icon based on the status */}
       {isError && <BsCloudSlash className="size-4" />}
-      {!showLoader && !showLoader && <BsCloudCheck />}
+      {!showLoader && !showError && <BsCloudCheck />}
       {showLoader && (
         <LoaderIcon className="size-4 animate-spin text-muted-foreground" />
       )}

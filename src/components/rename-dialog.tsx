@@ -1,19 +1,7 @@
 "use client";
 
-import {
-  AlertDialogCancel,
-  AlertDialogTitle,
-} from "@radix-ui/react-alert-dialog";
 import { Id } from "../../convex/_generated/dataModel";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTrigger,
-} from "./ui/alert-dialog";
+
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useState } from "react";

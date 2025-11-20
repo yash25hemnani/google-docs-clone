@@ -32,7 +32,7 @@ import {
   UploadIcon,
 } from "lucide-react";
 import React, { useState } from "react";
-import { type ColorResult, CirclePicker, SketchPicker } from "react-color";
+import { type ColorResult, SketchPicker } from "react-color";
 import {
   DropdownMenu,
   DropdownMenuContent,

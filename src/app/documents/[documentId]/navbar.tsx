@@ -30,7 +30,6 @@ import {
   StrikethroughIcon,
   TextIcon,
   TrashIcon,
-  Underline,
   UnderlineIcon,
   Undo2Icon,
 } from "lucide-react";

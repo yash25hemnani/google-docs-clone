@@ -18,7 +18,6 @@ import { LineHeightExtension } from "@/extensions/line-height";
 import Ruler from "./ruler";
 import {
   useLiveblocksExtension,
-  FloatingToolbar,
 } from "@liveblocks/react-tiptap";
 import { Threads } from "./threads";
 import { useStorage } from "@liveblocks/react";

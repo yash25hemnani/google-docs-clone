@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { Button } from "@/components/ui/button";
 import Navbar from "./navbar";
 import TemplatesGallery from "./templates-gallery";
 import { usePaginatedQuery } from "convex/react";
