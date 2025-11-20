@@ -36,19 +36,31 @@ export async function POST(req: Request) {
 
   const orgId = sessionClaims.org_id ?? o?.id ?? null;
 
-  const isOrganizationMember =
-  orgId && document.organizationId === orgId;
-
+  const isOrganizationMember = orgId && document.organizationId === orgId;
 
   if (!isOwner && !isOrganizationMember) {
-    console.log("Error:: Not an owner or organization member:  ", { isOwner, isOrganizationMember });
+    console.log("Error:: Not an owner or organization member:  ", {
+      isOwner,
+      isOrganizationMember,
+    });
     return new Response("Unauthorized", { status: 401 });
   }
 
+  const name =
+    user.fullName ?? user.primaryEmailAddress?.emailAddress ?? "Anonymous";
+
+  // Generate Unique Number for each user
+  const nameToNumber = name
+    .split("")
+    .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const hue = Math.abs(nameToNumber) % 360;
+  const color = `hsl(${hue}, 80%, 60%)`;
+
   const session = liveblocks.prepareSession(user.id, {
     userInfo: {
-      name: user.fullName ?? user.primaryEmailAddress?.emailAddress ?? "Anonymous",
+      name: name,
       avatar: user.imageUrl,
+      color: color,
     },
   });
 

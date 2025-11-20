@@ -1,11 +1,13 @@
 import React, { useRef, useState } from "react";
-import { BsCloudCheck } from "react-icons/bs";
+import { BsCloudCheck, BsCloudSlash } from "react-icons/bs";
 import { Id } from "../../../../convex/_generated/dataModel";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { useDebounce } from "@/hooks/use-debounce";
-import { News_Cycle } from "next/font/google";
 import { toast } from "sonner";
+import { useAuth } from "@clerk/nextjs";
+import { useStatus } from "@liveblocks/react";
+import { LoaderIcon } from "lucide-react";
 
 interface DocumentInputProps {
   title: string;
@@ -13,6 +15,13 @@ interface DocumentInputProps {
 }
 
 const DocumentInput = ({ title, id }: DocumentInputProps) => {
+  // User Data
+  const { userId } = useAuth();
+  const document = useQuery(api.documents.getById, { id });
+  const documentOwnerId = document?.ownerId;
+
+  const status = useStatus();
+
   const [value, setValue] = useState(title);
   const [isError, setIsError] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -51,6 +60,10 @@ const DocumentInput = ({ title, id }: DocumentInputProps) => {
     debouncedUpdate(newValue);
   };
 
+  const showLoader =
+    isPending || status === "connecting" || status === "reconnecting";
+  const showError = status === "disconnected";
+
   return (
     <div className="flex items-center gap-2">
       {isEditing ? (
@@ -69,7 +82,10 @@ const DocumentInput = ({ title, id }: DocumentInputProps) => {
       ) : (
         <span
           onClick={() => {
-            setIsEditing(true);
+            // Make it so only owner can edit the document
+            userId === documentOwnerId
+              ? setIsEditing(true)
+              : toast.warning("Only Owner Can Rename Documents");
             // We time out so we get time to render.
             setTimeout(() => {
               inputRef.current?.focus();
@@ -80,7 +96,13 @@ const DocumentInput = ({ title, id }: DocumentInputProps) => {
           {title}
         </span>
       )}
-      <BsCloudCheck />
+
+      {/* States for the icon based on the status */}
+      {isError && <BsCloudSlash className="size-4" />}
+      {!showLoader && !showLoader && <BsCloudCheck />}
+      {showLoader && (
+        <LoaderIcon className="size-4 animate-spin text-muted-foreground" />
+      )}
     </div>
   );
 };

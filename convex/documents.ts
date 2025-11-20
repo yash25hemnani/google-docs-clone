@@ -131,10 +131,12 @@ export const updateById = mutation({
     }
     // Check if user is the owner
     const isOwner = document.ownerId === user.subject;
+    
+    // Only owner can update
     if (!isOwner) {
       throw new ConvexError("Unauthorized Action");
     }
-    // Delete document
+
     return await ctx.db.patch(args.id, { title: args.title });
   },
 });

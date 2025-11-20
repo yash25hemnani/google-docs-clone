@@ -53,8 +53,7 @@ const TemplatesGallery = () => {
                 >
                   <button
                     disabled={isCreating} // Disable others while one is being created.
-                    // TODO: Add proper initial content
-                    onClick={() => onTemplateClick(template.label, "")}
+                    onClick={() => onTemplateClick(template.label, template.initialContent)}
                     style={{
                       backgroundImage: `url(${template.imageUrl})`,
                       backgroundSize: "cover",
