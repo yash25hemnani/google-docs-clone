@@ -37,6 +37,8 @@ import {
 import { BsFilePdf } from "react-icons/bs";
 import { useEditorStore } from "@/store/use-editor-store";
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
+import { Avatars } from "./avatars";
+import { Inbox } from "./inbox";
 
 const Navbar = () => {
   const { editor } = useEditorStore();
@@ -265,6 +267,8 @@ const Navbar = () => {
         </div>
       </div>
       <div className="flex gap-3 items-center pl-6">
+        <Avatars />
+        <Inbox />
         <OrganizationSwitcher
           // These will cause a refresh of the page - will come in handy during switching, ensuring that we can see only the documents beloninging to the given user/organization. Also, if you switch while working on a document, we will get redirected to the home page.
           // And it will create a new JWT token as well.

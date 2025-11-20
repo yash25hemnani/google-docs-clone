@@ -21,11 +21,15 @@ import {
   FloatingToolbar,
 } from "@liveblocks/react-tiptap";
 import { Threads } from "./threads";
+import { useStorage } from "@liveblocks/react";
 
 // We are defining the editor in such a way that when we print it, there is no unnecessary padding.
 const Editor = () => {
   const { setEditor } = useEditorStore();
   const liveblocks = useLiveblocksExtension();
+
+  const leftMargin = useStorage((root) => root.leftMargin)
+  const rightMargin = useStorage((root) => root.rightMargin)
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -56,7 +60,7 @@ const Editor = () => {
     },
     editorProps: {
       attributes: {
-        style: "padding-left: 56px; padding-right: 56px;", // This will be dynamic later on
+        style: `padding-left: ${leftMargin ?? 56}px; padding-right: ${rightMargin ?? 56}px;`, // This will be dynamic later on
         class:
           "focus:outline-none print:border-0 bg-white border border-[#C7C7C7] flex flex-col min-h-[1054px] w-[816px] pt-10 pr-14 pb-10 cursor-text",
       },
